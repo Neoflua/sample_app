@@ -2,6 +2,7 @@ require "test_helper"
 
 class SiteLayoutTest < ActionDispatch::IntegrationTest
 
+  # --- パターン①：ログインしていない時のテスト ---
   test "layout links" do
     get root_path
     assert_template 'static_pages/home'
@@ -9,6 +10,19 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", help_path
     assert_select "a[href=?]", about_path
     assert_select "a[href=?]", contact_path
+    assert_select "a[href=?]", login_path # ログイン「できる」リンクがある
+
+  # --- パターン②：ログインしている時のテスト ---
+    user = users(:michael) # テストデータを準備
+    log_in_as(user)        # ログインする
+    get root_path          # ログイン状態でHomeをもう一度開く
+
+    assert_select "a[href=?]", logout_path           # ログアウトがあるか
+    assert_select "a[href=?]", users_path            # ユーザー一覧があるか
+    assert_select "a[href=?]", user_path(user)       # プロフィールがあるか
+    assert_select "a[href=?]", edit_user_path(user)  # 設定があるか
+    assert_select "a[href=?]", login_path, count: 0  # ログインリンクが消えたか
+
 
     # Contactページのタイトルチェック
     get contact_path
