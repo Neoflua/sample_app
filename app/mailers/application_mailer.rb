@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  default from: "user@realdomain.com" # ← ここをテストと同じアドレスにする
   layout "mailer"
 end
