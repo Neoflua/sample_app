@@ -10,8 +10,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    # 有効でないユーザーならホームへリダイレクト
-    redirect_to root_url and return unless @user.activated?
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
   def new
     @user = User.new
@@ -49,29 +48,20 @@ class UsersController < ApplicationController
 
   private
 
-  def user_params
+    def user_params
       params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation)
-  end
+    end
 
-  # beforeフィルタ
+    # beforeフィルター
 
-  # ログイン済みユーザーかどうか確認
-  def logged_in_user
-      unless logged_in?
-        flash[:danger] = "Please log in."
-        store_location
-        redirect_to login_url, status: :see_other
-      end
-  end
-
-  # 正しいユーザーかどうか確認、別のユーザーが追い返され、「他人のページは編集できない」というセキュリティ要件が満たされた
+    # 正しいユーザーかどうかを確認
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url, status: :see_other) unless current_user?(@user)
     end
 
-    # 管理者かどうか確認
+    # 管理者かどうかを確認
     def admin_user
       redirect_to(root_url, status: :see_other) unless current_user.admin?
     end
