@@ -8,7 +8,6 @@ gem "rails", "7.0.4.3"
 gem "image_processing",           "1.12.2"
 gem "active_storage_validations", "0.9.8"
 
-# gem "logger", "1.7.0"  Rails 7.0は自分の中に logger を持っているため、ここで外部の logger gemをわざわざ指定すると、中身がぶつかって今回のような「死のNameError」を吐いてビルドが止まります
 gem "bcrypt",          "3.1.18"
 gem "faker",           "2.21.0"
 gem "will_paginate",           "3.3.1"
