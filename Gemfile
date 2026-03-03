@@ -87,5 +87,6 @@ end
 
 group :production do
     gem "pg", "1.3.5"
+    gem "aws-sdk-s3", "1.114.0", require: false  #AWS!画像！
   end
   # gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]

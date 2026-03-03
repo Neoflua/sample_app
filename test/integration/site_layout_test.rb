@@ -17,6 +17,9 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as(user)        # ログインする
     get root_path          # ログイン状態でHomeをもう一度開く
 
+    assert_select "strong#following", count: 1
+    assert_select "strong#followers", count: 1
+
     assert_select "a[href=?]", logout_path           # ログアウトがあるか
     assert_select "a[href=?]", users_path            # ユーザー一覧があるか
     assert_select "a[href=?]", user_path(user)       # プロフィールがあるか
